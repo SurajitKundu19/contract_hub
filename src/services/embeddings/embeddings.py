@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+
+import numpy as np
 from huggingface_hub import InferenceClient
 from transformers import AutoTokenizer, AutoModel
 import torch
@@ -46,11 +48,11 @@ class Embedder:
     def __init__(self, strategy: BaseEmbedding):
         self.strategy = strategy
 
-    def get_embedding(self, texts: list[str]) -> list[str]:
+    def get_embedding(self, texts: list[str]) -> list[np.float32]:
         all_embeddings = []
         for text in texts:
             embeddings = self.strategy.generate_embedding(text)
-            all_embeddings.extend(embeddings)
+            all_embeddings.append(embeddings)
         return all_embeddings
 
 
@@ -63,11 +65,12 @@ if __name__ == "__main__":
     print(f" Length of the data {len(data)}")
     chunker_strategy = FixedSizeChunking(chunk_size=400)
     chunker = Chunker(chunker_strategy)
-    chunk_data = chunker.chunk_texts(data[:1])
+    chunk_data = chunker.chunk_texts(data[:2])
+    # print(chunk_data)
     legal_embedder = LegalBertEmbedder()
     embedder = Embedder(legal_embedder)
     _embeddings = embedder.get_embedding(chunk_data)
-    print(f"Embeddings {_embeddings}")
+    # print(f"Embeddings {_embeddings}")
 
     print(len(chunk_data))
 
