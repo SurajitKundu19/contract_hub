@@ -1,0 +1,80 @@
+########################################################
+# UV Project configuration
+########################################################
+
+[project]
+name = "ContractHub"
+version = "0.0.0"
+description = "Cpntract Hub"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+main = [
+    "pydantic>=2.6.4",
+    "pydantic-settings>=2.3.3",
+    "PyYAML~=6.0.2",
+    "huggingface-hub>=0.32.4",
+    "transformers>=4.52.4",
+    "torch>=2.7.0",
+    "scikit-learn>=1.6.1",
+]
+
+########################################################
+# Ruff configuration
+########################################################
+
+[tool.ruff]
+# Where are the source files located?
+src = [
+    "src"
+]
+# Include only specific directories and their contents recursively
+include = [
+    "src/**/*.py"
+]
+line-length = 100  # Line length limit
+indent-width = 4  # Indent width (spaces)
+target-version = "py312" # Assume Python 3.12
+
+[tool.ruff.lint]
+select = [
+    "E4",  # Ignore line length
+    "E7",  # Ignore unused variables
+    "F",  # Ignore all other rules
+    "D",  # Enable all pydocstyle rules
+    "I"  # Enable all isort rules
+]
+ignore = [
+    "E731",  # Ignore lambda assigned to variable check
+    "F811",  # Ignore unused methods, this doesn't work nicely with fastAPI endpoint functions
+    "D100",  # Ignore missing docstrings for module docstrings
+    "D104",  # Ignore undocumented public package docstrings
+    "D415",  # Ignore first line should end with a period, question mark, or exclamation point
+    "D205" # Ignore 1 blank line required between summary line and description
+]
+fixable = ["ALL"]  # Allow fix for all enabled rules (when `--fix`) is provided.
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"  # Allow unused variables when underscore-prefixed.
+
+[tool.ruff.format]
+quote-style = "double"  # Like Black, use double quotes for strings.
+indent-style = "space"  # Like Black, indent with spaces, rather than tabs.
+skip-magic-trailing-comma = false  # Like Black, respect magic trailing commas.
+line-ending = "auto"  # Like Black, automatically detect the appropriate line ending.
+docstring-code-format = true  # Enable auto-formatting of code examples in docstrings.
+docstring-code-line-length = "dynamic"  # Set the line length limit used when formatting code snippets in docstrings.
+
+[tool.ruff.lint.pydoclint]
+ignore-one-line-docstrings = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+ignore-var-parameters = true
+
+[tool.ruff.lint.per-file-ignores]
+"app/schemas/pricing.py" = ["D"]  # Ignore docstrings for pricing schema
+"app/schemas/config.py" = ["D"]  # Ignore docstrings for config schema
+
+[tool.ruff.lint.isort]
+known-local-folder = ["app", "tests", "scripts", "ci"]
