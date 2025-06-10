@@ -2,6 +2,8 @@ from src.services.data_extraction.extract_data import TextFileSource
 from src.services.chunking.chunker import FixedSizeChunking, Chunker
 from src.services.embeddings.embeddings import LegalBertEmbedder, Embedder
 from src.services.similarity_search.similarity_search import SimilaritySearch
+from src.services.prompt_engineering.prompt_engineering import PromptEngineer, LlamaPromptEngineering, MistralPromptEngineering, OllamaPromptEngineering
+from src.services.answer_generation.answer_generation import AnswerGenerator, MistralAnswerGenerator, OllamaAnswerGenerator
 
 
 data = TextFileSource().get_data()
@@ -19,6 +21,24 @@ print(f"Embeddings {_embeddings[1].shape}")
 
 
 similarity = SimilaritySearch(embedder, chunk_data, _embeddings)
-query = "Hello"
-act_text, embd = similarity.find_similarity(query)
-print(act_text)
+query = "What is Company's costs of manufacturing"
+similar_text, embd = similarity.find_similarity(query)
+print(similar_text)
+
+
+# prompt_template = MistralPromptEngineering()
+# prompt_engineer = PromptEngineer(prompt_template)
+# prompt = prompt_engineer.get_prompt(query, similar_text)
+
+# llm_model = MistralAnswerGenerator(model="mistralai/Mistral-7B-Instruct-v0.2")
+# answer_generator = AnswerGenerator(llm_model)
+# answer_generator.get_answer(prompt)
+
+prompt_template = OllamaPromptEngineering()
+prompt_engineer = PromptEngineer(prompt_template)
+prompt = prompt_engineer.get_prompt(query, similar_text)
+
+llm_model = OllamaAnswerGenerator(model="llama3.2")
+answer_generator = AnswerGenerator(llm_model)
+answer = answer_generator.get_answer(prompt)
+print(answer)

@@ -34,11 +34,11 @@ if __name__ == "__main__":
     chunker = Chunker(chunker_strategy)
     chunk_data = chunker.chunk_texts(data[:1])
     legal_embedder = LegalBertEmbedder()
-    embedder = Embedder(legal_embedder)
-    _embeddings = embedder.get_embedding(chunk_data)
+    _embedder = Embedder(legal_embedder)
+    _embeddings = _embedder.get_embedding(chunk_data)
     print(f"Embeddings {_embeddings[1].shape}")
 
-    similarity = SimilaritySearch(embedder, chunk_data, _embeddings)
+    similarity = SimilaritySearch(_embedder, chunk_data, _embeddings)
     query = ["What is pursuant to the terms of this Agreement"]
     act_text, embd = similarity.find_similarity(query)
     print(act_text)
