@@ -1,3 +1,4 @@
+import os
 from abc import ABC, abstractmethod
 from transformers import AutoTokenizer, AutoModel, AutoTokenizer, AutoModelForCausalLM, pipeline
 import ollama
@@ -11,7 +12,7 @@ class BaseAnswerGenerator:
 
 class MistralAnswerGenerator(BaseAnswerGenerator):
     def __init__(self, model):
-        hf_token = "xxxxxxxxxxx"
+        hf_token = os.getenv('HUGGING_FACE_TOKEN')
         llm_tokenizer = AutoTokenizer.from_pretrained(model, token=hf_token)
         llm_model_obj = AutoModelForCausalLM.from_pretrained(model, token=hf_token)
 

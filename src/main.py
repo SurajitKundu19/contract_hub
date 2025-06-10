@@ -1,3 +1,7 @@
+import os
+
+from dotenv import find_dotenv, load_dotenv
+
 from src.services.data_extraction.extract_data import TextFileSource
 from src.services.chunking.chunker import FixedSizeChunking, Chunker
 from src.services.embeddings.embeddings import LegalBertEmbedder, Embedder
@@ -5,6 +9,8 @@ from src.services.similarity_search.similarity_search import SimilaritySearch
 from src.services.prompt_engineering.prompt_engineering import PromptEngineer, LlamaPromptEngineering, MistralPromptEngineering, OllamaPromptEngineering
 from src.services.answer_generation.answer_generation import AnswerGenerator, MistralAnswerGenerator, OllamaAnswerGenerator
 
+load_dotenv(find_dotenv("../.env"))
+print(f"Hugging Face Token: {os.getenv('HUGGING_FACE_TOKEN')}")
 
 data = TextFileSource().get_data()
 print(f" Length of the data {len(data)}")
