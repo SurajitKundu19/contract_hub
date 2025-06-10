@@ -11,7 +11,7 @@ class BaseAnswerGenerator:
 
 class MistralAnswerGenerator(BaseAnswerGenerator):
     def __init__(self, model):
-        hf_token = "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"
+        hf_token = "xxxxxxxxxxx"
         llm_tokenizer = AutoTokenizer.from_pretrained(model, token=hf_token)
         llm_model_obj = AutoModelForCausalLM.from_pretrained(model, token=hf_token)
 
